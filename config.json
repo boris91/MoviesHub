@@ -1,0 +1,19 @@
+﻿{
+	"globalApplicationName": "MH",
+	"jsFilesDirectoryPath": "",
+	"startOnDocReady": false,
+	"dbPath": "data/db/",
+	"resourcesPath": "data/resources/",
+	"defaultModules": [
+		"core.classes",
+		"core.dom",
+		"core.ajax",
+		"core.dbAccessor",
+		"core.templateEngine",
+		"core.keyCodes",
+		"core.idsGenerator",
+		"core.mediator",
+		"core.stylesManager",
+		"CSS:core.styles"
+	]
+}

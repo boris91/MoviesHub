@@ -1,0 +1,15 @@
+﻿<video id="components_movie_current" poster="{{images.placeholder}}" width="730" height="411" controls>
+	<source src="{{streams[0].url}}" type="video/{{streams[0].type}}"/>
+</video>
+<br/>
+<br/>
+<div id="components_movie_current_info">
+	<b><font class="components_movie_current_info_title">{{title}}</font></b>
+	<font class="components_movie_current_info_meta_releaseYear">({{meta.releaseYear}})</font>
+	<br/>
+	<font class="components_movie_current_meta_director">Director: {{meta.directors[0].name}}</font>
+	<br/>
+	<font class="components_movie_current_meta_director">Actors: {{getActorsNames()}}</font>
+</div>
+<br/>
+<br/>

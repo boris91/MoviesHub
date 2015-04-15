@@ -1,0 +1,12 @@
+﻿.components_movie_cover {
+	width: 141px;
+	height: 199px;
+	-moz-box-shadow: 0 0 5px 5px #888;
+	-webkit-box-shadow: 0 0 5px 5px#888;
+	box-shadow: 0 0 5px 5px #888;
+}
+
+.components_movie_collection_item {
+	display: inline-block;
+	margin: 0px 20px 0px 20px;
+}
