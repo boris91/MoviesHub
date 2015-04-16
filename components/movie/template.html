@@ -1,5 +1,7 @@
 ﻿<video id="components_movie_current" poster="{{images.placeholder}}" width="730" height="411" controls>
-	<source src="{{streams[0].url}}" type="video/{{streams[0].type}}"/>
+	{{concatStringForEachStream(function (stream) {
+		return '<source src=\"' + stream.url + '\" type=\"video/' + stream.type + '\"/>';
+	})}}
 </video>
 <br/>
 <br/>

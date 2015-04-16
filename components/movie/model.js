@@ -40,6 +40,16 @@
 				}
 
 				return names.join(", ");
+			},
+			concatStringForEachStream: function (handler/*function which returns string*/) {
+				var streams = this.streams,
+					streamsCount = streams.length,
+					resultString = "",
+					i;
+				for (i = 0; i < streamsCount; i++) {
+					resultString += handler(streams[i]);
+				}
+				return resultString;
 			}
 		};
 
