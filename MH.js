@@ -1,5 +1,5 @@
 ﻿/*uses config.json content and success handler function as incoming arguments*/
-(function IIFE$MH (__configParams /* globalApplicationName, jsFilesDirectoryPath, startOnDocReady, defaultModules */, __onSuccessHandler) {
+(function IIFE$MH (__configParams, __onSuccessHandler) {
 	"use strict";
 
 	var __win = this,
@@ -47,9 +47,11 @@
 		"Evt": __win.Event,
 		"Xhr": (MH$Xhr = __win.XMLHttpRequest),
 
-		"dbPath": __configParams["dbPath"],
-		"resourcesPath": __configParams["resourcesPath"],
-		"layoutsPath": __configParams["layoutsPath"],
+		"config": {
+			dbPath: __configParams["dbPath"],
+			resourcesPath: __configParams["resourcesPath"],
+			layoutsPath: __configParams["layoutsPath"]
+		},
 
 		"modules": (function IIFE$MH$modules () {
 			var _getModuleFilePath = function MH$modules$_getModuleFilePath (moduleFullName, fileExt) {

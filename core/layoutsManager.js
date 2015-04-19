@@ -3,7 +3,7 @@
 	function MH$modules$define_moduleGetter_dbAccessor () {
 		"use strict";
 		var modules = MH.modules,
-			layoutsPath = MH.layoutsPath,
+			layoutsPath = MH.config.layoutsPath,
 
 			_controllers = {},
 

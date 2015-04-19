@@ -3,7 +3,7 @@
 	function MH$modules$define_moduleGetter_dbAccessor () {
 		"use strict";
 		var ajax = MH.core.ajax,
-			dbPath = MH.dbPath;
+			dbPath = MH.config.dbPath;
 
 		return {
 			get: function (tableName) {
