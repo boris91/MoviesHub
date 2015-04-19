@@ -5,8 +5,6 @@
 	],
 	function MH$core$modules$define_moduleGetter_components$movie$viewModel (MovieCollection, MovieView) {
 		"use strict";
-		var dbAccessor = MH.core.dbAccessor,
-			mediator = MH.core.mediator;
 
 		return function MovieViewModel () {
 			var _collection = null,
@@ -36,16 +34,15 @@
 				};
 
 			return {
-				init: function () {
+				init: function (params/*view, collection*/) {
 					var dbData;
 
 					if (_collection && _view) {
 						_unbind();
 					}
 
-					dbData = dbAccessor.get("movies");
-					_collection = new MovieCollection(dbData);
-					_view = new MovieView();
+					_collection = new MovieCollection(params.collection);
+					_view = new MovieView(params.view);
 
 					_renderCollection();
 					_renderSelectedMovie();

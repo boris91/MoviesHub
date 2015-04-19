@@ -13,7 +13,7 @@ Project structure:
 	3. MH.js - file with main global namespace of application, loads and initializes all default modules (this is part of my own framework).
 	4. web.config - includes MIME-type for JSON files.
 	5. core folder - provides all core modules for application (developed previously by myself in my own framework).
-	6. data folder - consists of static content - db (emulated with set of json-files, now there's only one file - movies.json) and resources (images for movies covers and placeholders).
+	6. data folder - consists of static content - db (emulated with set of json-files, now there's only one file - movie.json) and resources (images for movies covers and placeholders).
 	7. components folder - provides components for application; right now there's only one component - "movie", which consists of ViewModel, Collection, Model, View js-files and also css-styles and html-templates.
 
 Principles of work:

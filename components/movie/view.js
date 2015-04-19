@@ -8,13 +8,11 @@
 	function MH$core$modules$define_moduleGetter_components$movie$view (movieTemplate, movieCollectionItemTemplate, movieStyles, movieCollectionStyles) {
 		"use strict";
 		var dom = MH.core.dom,
-			templateEngine = MH.core.templateEngine,
 			stylesManager = MH.core.stylesManager;
 
-		return function MovieView (eventsMap) {
-			var _commonDomContainer = dom.create("DIV", { id: "components_movie_common_container", style: "text-align: center;" }, null, dom.body),
-				_modelDomContainer = dom.create("DIV", { id: "components_movie_model_container" }, null, _commonDomContainer),
-				_collectionDomContainer = dom.create("DIV", { id: "components_movie_collection_container" }, null, _commonDomContainer);
+		return function MovieView (params/*modelDomContainer, collectionDomContainer*/) {
+			var _modelDomContainer = params.modelDomContainer,
+				_collectionDomContainer = params.collectionDomContainer;
 
 			stylesManager.include(movieStyles, movieCollectionStyles);
 

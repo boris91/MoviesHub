@@ -95,6 +95,10 @@
 
 		empty: function MH$core$dom$empty (node) {
 			node.innerHTML = "";
+		},
+
+		remove: function (node) {
+			node.parentNode.removeChild(node);
 		}
 	};
 

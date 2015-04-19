@@ -49,6 +49,7 @@
 
 		"dbPath": __configParams["dbPath"],
 		"resourcesPath": __configParams["resourcesPath"],
+		"layoutsPath": __configParams["layoutsPath"],
 
 		"modules": (function IIFE$MH$modules () {
 			var _getModuleFilePath = function MH$modules$_getModuleFilePath (moduleFullName, fileExt) {
@@ -200,6 +201,15 @@
 		}
 	})();
 	// --- require default modules ---
+
+	// +++ init default layout +++
+	(function  IIFE$_initDefaultLayout () {
+		var defaultLayoutName = __configParams["defaultLayout"];
+		if (defaultLayoutName) {
+			MH.core.layoutsManager.init(defaultLayoutName);
+		}
+	})();
+	// --- init default layout ---
 
 	if ("function" === typeof __onSuccessHandler) {
 		__onSuccessHandler();

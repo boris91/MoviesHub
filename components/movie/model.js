@@ -3,8 +3,8 @@
 	function MH$core$modules$define_moduleGetter_components$movie$model () {
 		"use strict";
 		var idsGenerator = MH.core.idsGenerator,
-			coversPath = MH.resourcesPath + "movies/covers/",
-			placeholdersPath = MH.resourcesPath + "movies/placeholders/";
+			coversPath = MH.resourcesPath + "movie/covers/",
+			placeholdersPath = MH.resourcesPath + "movie/placeholders/";
 
 		function MovieModel (props) {
 			this.id = props.id || idsGenerator.getId();

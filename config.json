@@ -4,6 +4,8 @@
 	"startOnDocReady": false,
 	"dbPath": "data/db/",
 	"resourcesPath": "data/resources/",
+	"layoutsPath": "layouts/",
+
 	"defaultModules": [
 		"core.classes",
 		"core.dom",
@@ -14,6 +16,9 @@
 		"core.idsGenerator",
 		"core.mediator",
 		"core.stylesManager",
+		"core.layoutsManager",
 		"CSS:core.styles"
-	]
+	],
+
+	"defaultLayout": "moviesGallery"
 }
