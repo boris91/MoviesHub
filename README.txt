@@ -8,7 +8,7 @@ To run it in browser (FF last version, Chrome last version, IE last version) you
 
 
 Project structure:
-	1. index.html - main view of application, uses app.js file, initializes "movie"-component ViewModel.
+	1. layouts/index.html - main view of application, uses app.js file, initializes "movie"-component ViewModel.
 	2. app.js - main javascript file of application, reads configuration settings from config.json file and runs MH.js using them.
 	3. MH.js - file with main global namespace of application, loads and initializes all default modules (this is part of my own framework).
 	4. web.config - includes MIME-type for JSON files.
@@ -17,7 +17,7 @@ Project structure:
 	7. components folder - provides components for application; right now there's only one component - "movie", which consists of ViewModel, Collection, Model, View js-files and also css-styles and html-templates.
 
 Principles of work:
-	1. index.html inits MovieViewModel.
+	1. layouts/index.html inits MovieViewModel.
 	2. MovieViewModel reads movies data from "DB" (json-file) using MH.core.dbAccessor-helper.
 	3. MovieViewModel inits MovieCollection with fetched movies data (MovieCollection consists of set of MovieModel-instances).
 	4. MovieViewModel create MovieView.
