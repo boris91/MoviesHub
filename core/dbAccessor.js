@@ -1,21 +1,29 @@
-﻿MH.modules.define("core.dbAccessor",
-	null,
-	function MH$modules$define_moduleGetter_dbAccessor () {
-		"use strict";
-		var ajax = MH.core.ajax,
-			dbPath = MH.config.dbPath;
+﻿this["dbAccessor"] = (function () {
+	"use strict";
 
-		return {
-			get: function (tableName) {
-				var reqParams = {
-						method: "GET",
-						async: false,
-						url: dbPath + tableName + ".json",
-						handleAsJson: true
-					},
-					response = ajax.send(reqParams);
+	var $ajax = app.core.ajax,
+		$dbPath = app.config.dbPath;
 
-				return (response.success ? response.value : null);
-			},
-		};
-	});
+	return {
+		/*
+			params: {
+				table: "movie",
+				callback: function (res) { ... }
+			}
+		*/
+		get: function dbAccessor_get(params) {
+			var reqCallback = params.callback,
+				reqUrl = $dbPath + params.table + ".json",
+				reqParams = {
+					method: "GET",
+					async: !!reqCallback,
+					url: reqUrl,
+					onSuccess: reqCallback,
+					onError: reqCallback
+				},
+				response = $ajax.send(reqParams);
+
+			return (!reqCallback) && (response.success ? response.value : null);
+		}
+	};
+})();

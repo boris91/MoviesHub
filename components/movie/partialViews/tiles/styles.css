@@ -1,0 +1,12 @@
+﻿.components_movie_tiles_item_cover {
+	width: 141px;
+	height: 199px;
+	-moz-box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.components_movie_tiles_item {
+	display: inline-block;
+	margin: 0px 20px 0px 20px;
+}

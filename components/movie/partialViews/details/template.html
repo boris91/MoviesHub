@@ -1,0 +1,17 @@
+﻿<div class="components_movie_details">
+	<video id="components_movie_current" poster="{{images.placeholder}}" controls>
+		{{concatStringForEachStream(function (stream) {return '<source src=\"' + stream.url + '\" type=\"video/' + stream.type + '\"  />';})}}
+	</video>
+	<br />
+	<br />
+	<div id="components_movie_current_info">
+		<p class="components_movie_current_info_title">
+			<b>{{title}}</b>
+		</p>
+		<p class="components_movie_current_info_meta_releaseYear">({{meta.releaseYear}})</p>
+		<p class="components_movie_current_meta_director">Director: {{meta.directors[0].name}}</p>
+		<p class="components_movie_current_meta_director">Actors: {{getActorsNames()}}</p>
+	</div>
+	<br />
+	<br />
+</div>

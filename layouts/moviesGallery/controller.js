@@ -1,48 +1,63 @@
-﻿MH.modules.define("layouts.moviesGallery.controller",
-	[
-		"HTML:layouts.moviesGallery.layout",
+﻿({
+	name: "layouts.moviesGallery.controller",
+	deps: [
+		"HTML:layouts.moviesGallery.template",
+		"CSS:layouts.moviesGallery.styles",
 		"components.movie.viewModel"
 	],
-	function MH$modules$define_moduleGetter_layouts$moviesGallery$controller (moviesGalleryLayout, MovieViewModel) {
+	getter: function (moviesGalleryTemplate, moviesGalleryStyles, MovieViewModel) {
 		"use strict";
-		var dom = MH.core.dom,
-			dbAccessor = MH.core.dbAccessor,
 
-			_vm = null,
+		var $core = app.core,
+			$dom = $core.dom,
+			$domBody = $dom.body,
+			$modules = $core.modules,
+			$dbAccessor = $core.dbAccessor,
+			$stylesManager = $core.stylesManager,
 
-			_getModelContainer = function () {
-				return dom.getFirst("#components_movie_model_container");
-			},
-			_getCollectionContainer = function () {
-				return dom.getFirst("#components_movie_collection_container");
+			_movieViewModelParams = null,
+			_vm = new MovieViewModel(),
+
+			_getMoviesFromDb = function moviesGallery__getMoviesFromDb(callback) {
+				$dbAccessor.get({
+					table: "movie",
+					callback: callback
+				});
 			};
 
 		return {
-			init: function () {
-				var vmParams;
+			init: function moviesGallery_init() {
+				$stylesManager.include(moviesGalleryStyles);
+				moviesGalleryTemplate(null, $domBody);
 
-				moviesGalleryLayout(null, dom.body);
-
-				vmParams = {
-					view: {
-						modelDomContainer: _getModelContainer(),
-						collectionDomContainer: _getCollectionContainer()
-					},
-					collection: dbAccessor.get("movie")
-				};
-
-				_vm = new MovieViewModel();
-				_vm.init(vmParams);
+				_getMoviesFromDb(function onMoviesDbTableGet(dbData) {
+					$modules.require("layouts.moviesGallery.viewModelParams.movie", function (movieVMParams) {
+						_movieViewModelParams = movieVMParams;
+						_movieViewModelParams.collection.params = dbData;
+						_vm.init(_movieViewModelParams);
+					});
+				});
 			},
 
-			dispose: function () {
-				var modelContainer = _getModelContainer(),
-					collectionContainer = _getCollectionContainer();
+			refresh: function moviesGallery_refresh() {
+				this.dispose();
+				this.init();
+			},
+
+			dispose: function moviesGallery_dispose() {
+				var activeViews = _movieViewModelParams.view.views,
+					viewName, viewDomContainer;
 
 				_vm.dispose();
+				_movieViewModelParams.collection.data = null;
 
-				dom.remove(collectionContainer);
-				dom.remove(modelContainer);
+				for (viewName in activeViews) {
+					viewDomContainer = activeViews[viewName].domContainer;
+					$dom.remove(viewDomContainer);
+				}
+
+				$stylesManager.exclude(moviesGalleryStyles);
 			}
 		};
-	});
+	}
+})

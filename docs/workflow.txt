@@ -1,0 +1,9 @@
+﻿1. layouts/index.html inits default layout.
+2. Default layout inits ViewModel of required components.
+3. ViewModel
+	- creates & inits View:
+		- View inits Viewers with certain params (domContainer, etc.),
+	- creates Collection,
+	- binds View to Collection events & Collection to View events,
+	- inits Collection with dbData (from layout):
+		- Collection fires "onInit"-event and View renders all required Viewers listening to this event.

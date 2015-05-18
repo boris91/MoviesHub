@@ -1,0 +1,9 @@
+﻿1. layouts/index.html - main view of application, uses app.js file, initializes "movie"-component ViewModel.
+2. app.js - main javascript file of application, reads configuration settings from config.json file and runs core.js using them.
+3. core.js - initializes all core modules (is concatenated from all js-files of core dir).
+4. web.config - includes defaultDocument layout declaration.
+5. core folder - provides all core modules for application.
+6. data folder - consists of static content:
+	- db (emulated with set of json-files, now there's only one file - movie.json),
+	- resources (images for movies covers and placeholders).
+7. components folder - provides components for application.

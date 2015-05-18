@@ -1,24 +1,9 @@
 ﻿{
-	"globalApplicationName": "MH",
-	"jsFilesDirectoryPath": "",
-	"startOnDocReady": false,
+	"title": "Movies Hub",
+	"defaultLayout": "moviesGallery",
 	"dbPath": "data/db/",
+	"corePath": "core.js",
 	"resourcesPath": "data/resources/",
 	"layoutsPath": "layouts/",
-
-	"defaultModules": [
-		"core.classes",
-		"core.dom",
-		"core.ajax",
-		"core.dbAccessor",
-		"core.templateEngine",
-		"core.keyCodes",
-		"core.idsGenerator",
-		"core.mediator",
-		"core.stylesManager",
-		"core.layoutsManager",
-		"CSS:core.styles"
-	],
-
-	"defaultLayout": "moviesGallery"
+	"defaultModules": []
 }

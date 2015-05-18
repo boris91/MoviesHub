@@ -1,34 +1,40 @@
-﻿MH.modules.define("components.movie.model",
-	null,
-	function MH$core$modules$define_moduleGetter_components$movie$model () {
+﻿({
+	name: "components.movie.model",
+	base: "components._base.model",
+	getter: function () {
 		"use strict";
-		var idsGenerator = MH.core.idsGenerator,
-			coversPath = MH.config.resourcesPath + "movie/covers/",
-			placeholdersPath = MH.config.resourcesPath + "movie/placeholders/";
 
-		function MovieModel (props) {
-			this.id = props.id || idsGenerator.getId();
-			this.title = props.title || "Untitled";
+		var $idsGenerator = app.core.idsGenerator,
+			$coversPath = app.config.resourcesPath + "movie/covers/",
+			$placeholdersPath = app.config.resourcesPath + "movie/placeholders/";
+
+		function MovieModel(props) {
+			var metaInfo, imagesData;
+
+			props = props || {};
+
+			metaInfo = props.meta || {};
+			imagesData = props.images || {};
+
+			this.title = props.title || "";
 			this.description = props.description || "";
 
-			props.meta = props.meta || {};
 			this.meta = {
-				releaseYear: props.meta.releaseYear || (1900 + (new Date().getYear())),
-				directors: props.meta.directors || [],
-				actors: props.meta.actors || []
+				releaseYear: metaInfo.releaseYear || (1900 + (new Date().getYear())),
+				directors: metaInfo.directors || [],
+				actors: metaInfo.actors || []
 			};
 
-			props.images = props.images || {};
 			this.images = {
-				cover: (props.images.cover ? coversPath + props.images.cover : ""),
-				placeholder: (props.images.placeholder ? placeholdersPath + props.images.placeholder : "")
+				cover: (imagesData.cover ? $coversPath + imagesData.cover : ""),
+				placeholder: (imagesData.placeholder ? $placeholdersPath + imagesData.placeholder : "")
 			};
 
 			this.streams = props.streams || [];
 		};
 
 		MovieModel.prototype = {
-			getActorsNames: function () {
+			getActorsNames: function MovieModel_getActorsNames() {
 				var names = [],
 					actors = this.meta.actors,
 					actorsCount = actors.length,
@@ -41,7 +47,7 @@
 
 				return names.join(", ");
 			},
-			concatStringForEachStream: function (handler/*function which returns string*/) {
+			concatStringForEachStream: function MovieModel_concatStringForEachStream(handler/*function which returns string*/) {
 				var streams = this.streams,
 					streamsCount = streams.length,
 					resultString = "",
@@ -54,4 +60,5 @@
 		};
 
 		return MovieModel;
-	});
+	}
+})

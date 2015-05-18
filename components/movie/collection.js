@@ -1,91 +1,52 @@
-﻿MH.modules.define("components.movie.collection",
-	[
+﻿({
+	name: "components.movie.collection",
+	base: "components._base.collection",
+	deps: [
 		"components.movie.model"
 	],
-	function MH$core$modules$define_moduleGetter_components$movie$collection (MovieModel) {
+	getter: function (MovieModel) {
 		"use strict";
 
-		return function MovieCollection (dbMovies) {
-			var _movies = {},
-				_selectedMovieId = null,
-				_self = {
-					// +++ public methods +++
-					init: function (dbMovies) {
-						var moviesCount = dbMovies.length,
-							i;
+		function MovieCollection() {
+			this._selectedModelId = null;
+		}
 
-						_movies = {};
+		MovieCollection.prototype = {
+			_ModelClass: MovieModel,
 
-						for (i = 0; i < moviesCount; i++) {
-							this.add(dbMovies[i]);
-						}
+			init: function MovieCollection_init(models) {
+				this.__base__.init.apply(this, arguments);
 
-						if (0 < moviesCount) {
-							this.select(dbMovies[0].id);
-						}
-					},
+				if (0 < models.length) {
+					this.select(models[0].id);
+				}
+			},
 
-					add: function (dbMovie) {
-						var movie = new MovieModel(dbMovie),
-							existingMovie = _movies[movie.id];
-						if (!existingMovie) {
-							_movies[movie.id] = movie;
-						}
-					},
+			getSelected: function MovieCollection_getSelected() {
+				return this._models[this._selectedModelId];
+			},
 
-					get: function (id, /*?*/ propName) {
-						var movie = _movies[id];
+			select: function MovieCollection_select(id) {
+				if (id !== this._selectedModelId) {
+					this._selectedModelId = id;
+					this.onSelectMovie({ movieId: id });
+				}
+			},
 
-						if (movie) {
-							return ('string' === typeof propName) ? movie[propName] : movie;
-						} else {
-							return null;
-						}
-					},
+			dispose: function MovieCollection_dispose() {
+				this.__base__.dispose.apply(this, arguments);
 
-					getSelected: function () {
-						return _movies[_selectedMovieId];
-					},
+				this._selectedMovieId = null;
+			},
 
-					forEach: function (action) {
-						var result = false,
-							id;
-						for (id in _movies) {
-							result = action(_movies[id]) || result;
-						}
-						return result;
-					},
-
-					update: function (id, props) {
-						var movie = _movies[id],
-							propName;
-
-						if (movie) {
-							for (propName in props) {
-								movie[propName] = props[propName];
-							}
-						}
-					},
-
-					remove: function (id) {
-						return (delete _movies[id]);
-					},
-
-					dispose: function () {
-						_movies = null;
-						_selectedMovieId = null;
-					},
-
-					select: function (id) {
-						_selectedMovieId = id;
-					}
-					// --- public methods ---
-				};
-
-			if (dbMovies) {
-				_self.init(dbMovies);
+			// +++ events +++
+			onSelectMovie: function MovieCollection_onSelectMovie(event) {
+				event = event || { movieId: this._selectedModelId };
+				this.publish("onSelectMovie", event);
 			}
-
-			return _self;
+			// --- events ---
 		};
-	});
+
+		return MovieCollection;
+	}
+})

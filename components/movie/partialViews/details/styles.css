@@ -1,0 +1,15 @@
+﻿#components_movie_current {
+	-moz-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+	max-width: 730px;
+	max-height: 411px;
+}
+
+.components_movie_current_info_title {
+	color: rgb(255, 255, 255);
+}
+
+.components_movie_current_info_meta_releaseYear {
+	color: rgba(255, 255, 255, 0.7);
+}

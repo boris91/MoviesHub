@@ -1,35 +1,35 @@
-﻿MH.modules.define("core.dom", null, function MH$modules$define_moduleGetter_dom () {
+﻿this["dom"] = (function () {
 	"use strict";
 
-	var _win = MH.win,
-		_doc = _win.document,
-		_docHead = _doc.head,
-		_docBody = _doc.body,
-		_tempNode = _doc.createElement("tmp"),
-		MH$core$dom;
+	var $window = window,
+		$document = $window.document,
+		$dom = null,
+		_docHead = $document.head,
+		_docBody = $document.body,
+		_tempNode = $document.createElement("tmp");
 
-	if ("complete" !== _doc.readyState) {
-		_win.addEventListener("load", function MH$win$onload$listener () {
-			_docHead = _docHead || (MH$core$dom.head = _doc.head);
-			_docBody = _docBody || (MH$core$dom.body = _doc.body);
-			_win.removeEventListener("load", MH$win$onload$listener);
+	if ("complete" !== $document.readyState) {
+		$window.addEventListener("load", function window_onload_listener() {
+			_docHead = _docHead || ($dom.head = $document.head);
+			_docBody = _docBody || ($dom.body = $document.body);
+			$window.removeEventListener("load", window_onload_listener);
 		});
 	}
 
-	MH$core$dom = {
-		doc: _doc,
+	return $dom = {
+		doc: $document,
 		head: _docHead,
 		body: _docBody,
 
-		getAll: function MH$core$dom$getAll (selector, targetNode) {
-			return (targetNode || _doc).querySelectorAll(selector);
+		getAll: function dom_getAll(selector, targetNode) {
+			return (targetNode || $document).querySelectorAll(selector);
 		},
-		getFirst: function MH$core$dom$getFirst (selector, targetNode) {
-			return (targetNode || _doc).querySelector(selector);
+		getFirst: function dom_getFirst(selector, targetNode) {
+			return (targetNode || $document).querySelector(selector);
 		},
 
-		create: function MH$core$dom$create (tagName, properties, children, parentNode) {
-			var node = _doc.createElement(tagName),
+		create: function dom_create(tagName, properties, children, parentNode) {
+			var node = $document.createElement(tagName),
 				propName, i, childrenCount, childData;
 
 			if (properties) {
@@ -52,24 +52,31 @@
 
 			return node;
 		},
-		createFromOuterHtml: function MH$core$dom$createFromString (nodeOuterHtml, parentNode) {
-			var nodes, i;
+		createFromOuterHtml: function dom_createFromString(nodeOuterHtml, parentNode) {
+			var nodes = [],
+				node, tempNodes, i;
 
 			_tempNode.innerHTML = nodeOuterHtml;
-			nodes = _tempNode.childNodes;
+			tempNodes = _tempNode.childNodes;
 
 			if (parentNode) {
-				for (i = 0; i < nodes.length; i++) {
-					parentNode.appendChild(nodes[i]);
+				for (i = 0; i < tempNodes.length; i++) {
+					node = parentNode.appendChild(tempNodes[i]);
+					nodes.push(node);
+				}
+			} else {
+				for (i = 0; i < tempNodes.length; i++) {
+					node = this.copy(tempNodes[i], null, true);
+					nodes.push(node);
 				}
 			}
 
 			_tempNode.innerHTML = "";
 
-			return nodes;
+			return (1 === nodes.length) ? nodes[0] : nodes;
 		},
-		createFragment: function MH$core$dom$createFragment (nodesData /* Array of objects: { tagName, properties, children } */, parentNode) {
-			var docFragment = _doc.createDocumentFragment(),
+		createFragment: function dom_createFragment(nodesData /* Array of objects: { tagName, properties, children } */, parentNode) {
+			var docFragment = $document.createDocumentFragment(),
 				nodesCount = nodesData.length,
 				i, nodeData;
 
@@ -85,7 +92,7 @@
 			return docFragment;
 		},
 
-		copy: function MH$core$dom$copy (node, parentNode, makeItShallow) {
+		copy: function dom_copy(node, parentNode, makeItShallow) {
 			var nodeCopy = node.cloneNode(!makeItShallow);
 			if (parentNode) {
 				parentNode.appendChild(nodeCopy);
@@ -93,14 +100,15 @@
 			return nodeCopy;
 		},
 
-		empty: function MH$core$dom$empty (node) {
+		empty: function dom_empty(node) {
 			node.innerHTML = "";
 		},
 
 		remove: function (node) {
-			node.parentNode.removeChild(node);
+			var parentNode = node.parentNode;
+			if (parentNode) {
+				parentNode.removeChild(node);
+			}
 		}
 	};
-
-	return MH$core$dom;
-});
+})();
