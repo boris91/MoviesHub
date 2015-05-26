@@ -26,15 +26,16 @@
 						this.add(data);
 					}, this);
 
-					this.onInitComplete();
+					this.onInitComplete({ models: this._models });
 				},
 
 				add: function BaseCollection_add(data) {
 					var model = new this._ModelClass(data),
-						existingMovie = this._models[model.id];
+						existingModel = this._models[model.id];
 
-					if (!existingMovie) {
+					if (!existingModel) {
 						this._models[model.id] = model;
+						this.onModelAdded({ model: model });
 					}
 				},
 
@@ -52,7 +53,7 @@
 					var model = this._models[id];
 
 					if (model) {
-						model[propName] = value;
+						model.set(propName, value);
 					}
 				},
 
@@ -70,18 +71,19 @@
 				},
 
 				update: function BaseCollection_update(id, props) {
-					var model = this._models[id],
-						propName;
+					var model = this._models[id];
 
 					if (model) {
-						for (propName in props) {
-							model[propName] = props[propName];
-						}
+						model.update(props);
 					}
 				},
 
 				remove: function BaseCollection_remove(id) {
-					return (delete this._models[id]);
+					var removed = (delete this._models[id]);
+					if (removed) {
+						this.onModelRemoved({ id: id });
+					}
+					return removed;
 				},
 
 				dispose: function BaseCollection_dispose() {
@@ -90,8 +92,14 @@
 				},
 
 				// +++ events +++
-				onInitComplete: function BaseCollection_onInitComplete() {
-					this.publish("onInitComplete");
+				onInitComplete: function BaseCollection_onInitComplete(args) {
+					this.publish("onInitComplete", args);
+				},
+				onModelAdded: function BaseCollection_onModelAdded(args) {
+					this.publish("onModelAdded", args);
+				},
+				onModelRemoved: function BaseCollection_onModelRemoved(args) {
+					this.publish("onModelAdded", args);
 				}
 				// --- events ---
 			}
