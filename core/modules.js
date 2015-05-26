@@ -189,8 +189,10 @@
 				var module = moduleWrapper.getter.apply(null, $Array_slice.call(arguments));
 
 				_loadModule(moduleWrapper.base, function (base) {
-					if (base) {
-						module = $classes.inherit(module, base);
+					if ("class" === moduleWrapper.type) {
+						module.name = module.name || moduleWrapper.name;
+						module.base = base;
+						module = $classes.create(module);
 					}
 
 					_loadModules(moduleWrapper.mixes, function (/*mixes*/) {

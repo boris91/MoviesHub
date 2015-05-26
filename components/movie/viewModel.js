@@ -1,4 +1,5 @@
 ﻿({
+	type: "class",
 	name: "components.movie.viewModel",
 	base: "components._base.viewModel",
 	deps: [
@@ -8,13 +9,15 @@
 	getter: function (MovieCollection, MovieView) {
 		"use strict";
 
-		function MovieViewModel() { }
+		return {
+			name: "MovieViewModel",
 
-		MovieViewModel.prototype = {
-			_CollectionClass: MovieCollection,
-			_ViewClass: MovieView
+			ctor: function MovieViewModel() { },
+
+			proto: {
+				_CollectionClass: MovieCollection,
+				_ViewClass: MovieView
+			}
 		};
-
-		return MovieViewModel;
 	}
 })

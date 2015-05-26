@@ -1,4 +1,5 @@
 ﻿({
+	type: "class",
 	name: "components.movie.partialViews.tiles.viewer",
 	base: "components._base.partialViewers.multi",
 	deps: [
@@ -8,16 +9,18 @@
 	getter: function (tilesStyles, tilesItemTemplate) {
 		"use strict";
 
-		function MovieTilesViewer() { }
+		return {
+			name: "MovieTilesViewer",
 
-		MovieTilesViewer.prototype = {
-			_styles: tilesStyles,
-			_template: tilesItemTemplate,
-			onSelectMovie: function MovieTilesViewer_onSelectMovie(event) {
-				this.publish("onSelectMovie", event);
+			ctor: function MovieTilesViewer() { },
+
+			proto: {
+				_styles: tilesStyles,
+				_template: tilesItemTemplate,
+				onSelectMovie: function MovieTilesViewer_onSelectMovie(event) {
+					this.publish("onSelectMovie", event);
+				}
 			}
 		};
-
-		return MovieTilesViewer;
 	}
 })

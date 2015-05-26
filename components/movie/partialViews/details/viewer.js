@@ -1,4 +1,5 @@
 ﻿({
+	type: "class",
 	name: "components.movie.partialViews.details.viewer",
 	base: "components._base.partialViewers.single",
 	deps: [
@@ -8,13 +9,15 @@
 	getter: function (detailsStyles, detailsTemplate) {
 		"use strict";
 
-		function MovieDetailsViewer() { }
+		return {
+			name: "MovieDetailsViewer",
 
-		MovieDetailsViewer.prototype = {
-			_styles: detailsStyles,
-			_template: detailsTemplate
+			ctor: function MovieDetailsViewer() { },
+
+			proto: {
+				_styles: detailsStyles,
+				_template: detailsTemplate
+			}
 		};
-
-		return MovieDetailsViewer;
 	}
 })

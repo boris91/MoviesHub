@@ -1,4 +1,5 @@
 ﻿({
+	type: "class",
 	name: "components.movie.model",
 	base: "components._base.model",
 	getter: function () {
@@ -8,57 +9,59 @@
 			$coversPath = app.config.resourcesPath + "movie/covers/",
 			$placeholdersPath = app.config.resourcesPath + "movie/placeholders/";
 
-		function MovieModel(props) {
-			var metaInfo, imagesData;
+		return {
+			name: "MovieModel",
 
-			props = props || {};
+			ctor: function MovieModel(props) {
+				var metaInfo, imagesData;
 
-			metaInfo = props.meta || {};
-			imagesData = props.images || {};
+				props = props || {};
 
-			this.title = props.title || "";
-			this.description = props.description || "";
+				metaInfo = props.meta || {};
+				imagesData = props.images || {};
 
-			this.meta = {
-				releaseYear: metaInfo.releaseYear || (1900 + (new Date().getYear())),
-				directors: metaInfo.directors || [],
-				actors: metaInfo.actors || []
-			};
+				this.title = props.title || "";
+				this.description = props.description || "";
 
-			this.images = {
-				cover: (imagesData.cover ? $coversPath + imagesData.cover : ""),
-				placeholder: (imagesData.placeholder ? $placeholdersPath + imagesData.placeholder : "")
-			};
+				this.meta = {
+					releaseYear: metaInfo.releaseYear || (1900 + (new Date().getYear())),
+					directors: metaInfo.directors || [],
+					actors: metaInfo.actors || []
+				};
 
-			this.streams = props.streams || [];
-		};
+				this.images = {
+					cover: (imagesData.cover ? $coversPath + imagesData.cover : ""),
+					placeholder: (imagesData.placeholder ? $placeholdersPath + imagesData.placeholder : "")
+				};
 
-		MovieModel.prototype = {
-			getActorsNames: function MovieModel_getActorsNames() {
-				var names = [],
-					actors = this.meta.actors,
-					actorsCount = actors.length,
-					name, i;
-
-				for (i = 0; i < actorsCount; i++) {
-					name = actors[i].name;
-					names.push(name);
-				}
-
-				return names.join(", ");
+				this.streams = props.streams || [];
 			},
-			concatStringForEachStream: function MovieModel_concatStringForEachStream(handler/*function which returns string*/) {
-				var streams = this.streams,
-					streamsCount = streams.length,
-					resultString = "",
-					i;
-				for (i = 0; i < streamsCount; i++) {
-					resultString += handler(streams[i]);
+
+			proto: {
+				getActorsNames: function MovieModel_getActorsNames() {
+					var names = [],
+						actors = this.meta.actors,
+						actorsCount = actors.length,
+						name, i;
+
+					for (i = 0; i < actorsCount; i++) {
+						name = actors[i].name;
+						names.push(name);
+					}
+
+					return names.join(", ");
+				},
+				concatStringForEachStream: function MovieModel_concatStringForEachStream(handler/*function which returns string*/) {
+					var streams = this.streams,
+						streamsCount = streams.length,
+						resultString = "",
+						i;
+					for (i = 0; i < streamsCount; i++) {
+						resultString += handler(streams[i]);
+					}
+					return resultString;
 				}
-				return resultString;
 			}
 		};
-
-		return MovieModel;
 	}
 })
