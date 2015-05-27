@@ -16,35 +16,39 @@
 			},
 
 			proto: {
-				set: function BaseModel_set(propName, newValue) {
-					var propValue = this[propName];
-					if (propValue !== newValue) {
+				set: function BaseModel_set(propName, newValue, silentMode) {
+					var propChangedEventArgs;
+
+					if (newValue !== this[propName]) {
 						this[propName] = newValue;
-						this.onPropChanged({
-							name: propName,
-							prev: propValue,
-							curr: newValue
-						});
+						if (!silentMode) {
+							propChangedEventArgs = {};
+							propChangedEventArgs[propName] = newValue;
+							this.onPropChanged(propChangedEventArgs);
+						}
+
+						return true;
 					}
+
+					return false;
 				},
 
-				update: function BaseModel_update(props) {
-					var propsChangedEventArgs = {},
+				update: function BaseModel_update(props, silentMode) {
+					var changedProps = {},
 						propName, propValue, newValue;
 
 					for (propName in props) {
-						propValue = this[propName];
-						if (propValue !== newValue) {
-							propsChangedEventArgs[propName] = {
-								prev: propValue,
-								curr: newValue
-							};
+						newValue = props[propName];
+						if (newValue !== this[propName]) {
+							this[propName] = changedProps[propName] = newValue;
 						}
 					}
 
-					if (0 !== $Object.keys(propsChangedEventArgs).length) {
-						this.onPropsChanged(propsChangedEventArgs);
+					if (!silentMode && 0 !== $Object.keys(changedProps).length) {
+						this.onPropsChanged(changedProps);
 					}
+
+					return changedProps;
 				},
 
 				// +++ events +++

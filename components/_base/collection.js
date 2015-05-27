@@ -30,52 +30,51 @@
 				},
 
 				add: function BaseCollection_add(data) {
-					var model = new this._ModelClass(data),
-						existingModel = this._models[model.id];
-
-					if (!existingModel) {
-						this._models[model.id] = model;
-						this.onModelAdded({ model: model });
-					}
+					var model = new this._ModelClass(data);
+					this._models[model.id] = model;
+					this.onModelAdded({ model: model });
 				},
 
-				get: function BaseCollection_get(id, /*?*/ propName) {
-					var model = this._models[id];
-
-					if (model) {
-						return ("string" === typeof propName) ? model[propName] : model;
-					} else {
-						return null;
-					}
+				fetch: function BaseCollection_fetch(id) {
+					return this._models[id];
 				},
 
-				set: function BaseCollection_set(id, propName, value) {
-					var model = this._models[id];
+				get: function BaseCollection_get(id, propName) {
+					return this._models[id].get(propName);
+				},
 
-					if (model) {
-						model.set(propName, value);
-					}
+				set: function BaseCollection_set(id, propName, value, silentMode) {
+					return this._models[id].set(propName, value, silentMode);
 				},
 
 				forEach: function BaseCollection_forEach(action, context) {
-					var result = false,
+					var models = this._models,
+						result = false,
 						id;
 
 					context = context || null;
 
-					for (id in this._models) {
-						result = action.call(context, this._models[id], id) || result;
+					for (id in models) {
+						result = action.call(context, models[id], id) || result;
 					}
 
 					return result;
 				},
 
-				update: function BaseCollection_update(id, props) {
-					var model = this._models[id];
+				update: function BaseCollection_update(id, props, silentMode) {
+					return this._models[id].update(props, silentMode);
+				},
 
-					if (model) {
-						model.update(props);
+				updateRange: function BaseCollection_updateRange(modelsProps, silentMode) {
+					var models = this._models,
+						modelsUpdatedEventArgs = {},
+						id, propName;
+
+					for (id in modelsProps) {
+						modelsUpdatedEventArgs[id] = models[id].update(modelsProps[id], silentMode);
 					}
+
+					this.onModelsUpdated(modelsUpdatedEventArgs);
 				},
 
 				remove: function BaseCollection_remove(id) {
@@ -88,6 +87,9 @@
 
 				dispose: function BaseCollection_dispose() {
 					this.unsubscribeAll();
+					this.forEach(function (model) {
+						model.unsubscribeAll();
+					});
 					this._models = null;
 				},
 
@@ -100,7 +102,9 @@
 				},
 				onModelRemoved: function BaseCollection_onModelRemoved(args) {
 					this.publish("onModelAdded", args);
-				}
+				},
+				onModelsUpdated: function BaseCollection_onModelsUpdated(args) {
+					this.publish("onModelsUpdated", args);}
 				// --- events ---
 			}
 		};
