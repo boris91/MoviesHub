@@ -15,7 +15,7 @@
 					},
 					"details": {
 						"onSelectMovie": function (event, moviesCollection) {
-							var movie = moviesCollection.get(event.movieId);
+							var movie = moviesCollection.fetch(event.movieId);
 							this.erase();
 							this.render(movie);
 						}

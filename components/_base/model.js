@@ -16,6 +16,10 @@
 			},
 
 			proto: {
+				get: function BaseModel_get(propName) {
+					return this[propName];
+				},
+
 				set: function BaseModel_set(propName, newValue, silentMode) {
 					var propChangedEventArgs;
 
