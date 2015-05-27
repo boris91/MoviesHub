@@ -9,6 +9,7 @@
 
 			ctor: function Dictionary(dataArray) {
 				this._items = null;
+				this.count = -1;
 
 				if (dataArray) {
 					this.init(dataArray);
@@ -20,6 +21,7 @@
 
 				init: function Dictionary_init(dataArray) {
 					this._items = {};
+					this.count = 0;
 
 					if (dataArray) {
 						this.addRange(dataArray);
@@ -38,12 +40,19 @@
 							item = new ItemClass(datas[i]);
 							items[item.id] = item;
 						}
+
+						this.count += datasCount;
 					}
 				},
 
 				add: function Dictionary_add(data) {
 					var item = new this._ItemClass(data);
 					this._items[item.id] = item;
+					this.count++;
+				},
+
+				has: function Dictionary_has(id) {
+					return !!this._items[id];
 				},
 
 				fetch: function Dictionary_fetch(id) {
@@ -86,11 +95,19 @@
 				},
 
 				remove: function Dictionary_remove(id) {
-					return (delete this._items[id]);
+					var removed = (delete this._items[id]);
+					this.count--;
+					return removed;
+				},
+
+				clear: function Dictionary_clear() {
+					this._items = {};
+					this.count = 0;
 				},
 
 				dispose: function Dictionary_dispose() {
 					this._items = null;
+					this.count = -1;
 				}
 			}
 		};
