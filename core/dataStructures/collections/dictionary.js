@@ -11,17 +11,14 @@
 				this._items = null;
 				this.count = -1;
 
-				if (dataArray) {
-					this.init(dataArray);
-				}
+				this.init(dataArray);
 			},
 
 			proto: {
 				_ItemClass: null,
 
 				init: function Dictionary_init(dataArray) {
-					this._items = {};
-					this.count = 0;
+					this.clear();
 
 					if (dataArray) {
 						this.addRange(dataArray);
