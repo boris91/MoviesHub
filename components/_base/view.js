@@ -1,8 +1,10 @@
 ﻿({
 	type: "class",
 	name: "components._base.view",
-	base: "core.mediator",
-	getter: function () {
+	deps: [
+		"core.dataStructures.event"
+	],
+	getter: function ($Event) {
 		"use strict";
 
 		var $Array_forEach = window.Array.prototype.forEach,
@@ -13,6 +15,7 @@
 
 			ctor: function BaseView() {
 				this._partialViews = null;
+				this.initCompleted = new $Event();
 			},
 
 			proto: {
@@ -22,7 +25,7 @@
 					var viewer = new Viewer();
 					this._partialViews[viewName] = viewer;
 					viewer.init(viewParams);
-					viewer.subscribe("onViewerEvent", this.onViewerEvent.bind(this));
+					return viewer;
 				},
 
 				init: function BaseView_init(viewsParams) {
@@ -34,7 +37,7 @@
 									params = viewsParams[name];
 								this._addAndInit(name, params, viewer);
 							}, this);
-							this.onInitComplete();
+							this.initCompleted.trigger();
 						}.bind(this),
 						viewName;
 
@@ -77,7 +80,7 @@
 					}
 
 					this._partialViews = null;
-					this.unsubscribeAll();
+					this.initCompleted = new $Event();
 				},
 
 				getPartialView: function BaseView_getPartialView(name) {
@@ -93,17 +96,7 @@
 					for (name in partialViews) {
 						handler.call(context, partialViews[name], name);
 					}
-				},
-
-				// +++ events +++
-				onInitComplete: function BaseView_onInitComplete() {
-					this.publish("onInitComplete");
-				},
-
-				onViewerEvent: function BaseView_onViewerEvent(event) {
-					this.publish("onViewerEvent", event);
 				}
-				// --- events ---
 			}
 		};
 	}

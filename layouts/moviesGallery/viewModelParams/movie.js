@@ -9,12 +9,12 @@
 				params: null,
 				handlers: {
 					"tiles": {
-						"onInitComplete": function (event, moviesCollection) {
+						"initCompleted": function (event, moviesCollection) {
 							this.render(moviesCollection);
 						}
 					},
 					"details": {
-						"onSelectMovie": function (event, moviesCollection) {
+						"movieSelected": function (event, moviesCollection) {
 							var movie = moviesCollection.fetch(event.movieId);
 							this.erase();
 							this.render(movie);
@@ -31,7 +31,7 @@
 								var selectedMovieId = event.target.getAttribute("tiles-item-id");
 
 								if (selectedMovieId) {
-									this.onSelectMovie({ movieId: selectedMovieId });
+									this.movieSelected.trigger({ movieId: selectedMovieId });
 								}
 							}
 						}
@@ -42,7 +42,7 @@
 				},
 				handlers: {
 					"tiles": {
-						"onSelectMovie": function (event, movieTilesViewer) {
+						"movieSelected": function (event, movieTilesViewer) {
 							this.select(event.movieId);
 						}
 					}

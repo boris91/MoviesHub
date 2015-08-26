@@ -1,8 +1,10 @@
 ﻿({
 	type: "class",
 	name: "components._base.collection",
-	base: "core.mediator",
-	getter: function () {
+	deps: [
+		"core.dataStructures.event"
+	],
+	getter: function ($Event) {
 		"use strict";
 
 		return {
@@ -10,6 +12,10 @@
 
 			ctor: function BaseCollection(dataArray) {
 				this._models = {};
+				this.initCompleted = new $Event();
+				this.modelAdded = new $Event();
+				this.modelRemoved = new $Event();
+				this.modelsUpdated = new $Event();
 
 				if (dataArray) {
 					this.init(dataArray);
@@ -26,13 +32,13 @@
 						this.add(data);
 					}, this);
 
-					this.onInitComplete({ models: this._models });
+					this.initCompleted.trigger({ models: this._models });
 				},
 
 				add: function BaseCollection_add(data) {
 					var model = new this._ModelClass(data);
 					this._models[model.id] = model;
-					this.onModelAdded({ model: model });
+					this.modelAdded.trigger({ model: model });
 				},
 
 				fetch: function BaseCollection_fetch(id) {
@@ -74,38 +80,24 @@
 						modelsUpdatedEventArgs[id] = models[id].update(modelsProps[id], silentMode);
 					}
 
-					this.onModelsUpdated(modelsUpdatedEventArgs);
+					this.modelsUpdated.trigger(modelsUpdatedEventArgs);
 				},
 
 				remove: function BaseCollection_remove(id) {
 					var removed = (delete this._models[id]);
 					if (removed) {
-						this.onModelRemoved({ id: id });
+						this.modelRemoved.trigger({ id: id });
 					}
 					return removed;
 				},
 
 				dispose: function BaseCollection_dispose() {
-					this.unsubscribeAll();
-					this.forEach(function (model) {
-						model.unsubscribeAll();
-					});
+					this.initCompleted = new $Event();
+					this.modelAdded = new $Event();
+					this.modelRemoved = new $Event();
+					this.modelsUpdated = new $Event();
 					this._models = null;
-				},
-
-				// +++ events +++
-				onInitComplete: function BaseCollection_onInitComplete(args) {
-					this.publish("onInitComplete", args);
-				},
-				onModelAdded: function BaseCollection_onModelAdded(args) {
-					this.publish("onModelAdded", args);
-				},
-				onModelRemoved: function BaseCollection_onModelRemoved(args) {
-					this.publish("onModelAdded", args);
-				},
-				onModelsUpdated: function BaseCollection_onModelsUpdated(args) {
-					this.publish("onModelsUpdated", args);}
-				// --- events ---
+				}
 			}
 		};
 	}

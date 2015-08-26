@@ -1,7 +1,6 @@
 ﻿({
 	type: "class",
 	name: "components._base.partialViewers.single",
-	base: "core.mediator",
 	getter: function () {
 		"use strict";
 

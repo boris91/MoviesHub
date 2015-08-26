@@ -14,20 +14,22 @@
 			proto: {
 				_count: 0,
 
-				_addFromIndex: function Event__addRangeFromIndex(context, startIndex, indexes, handler, index) {
-					this.add(handler, context, startIndex + index);
+				_addFromIndex: function Event__addRangeFromIndex(context, args, startIndex, indexes, handler, index) {
+					this.add(handler, context, args, startIndex + index);
 					indexes.push(startIndex + index);
 				},
 
-				addRange: function Event_addRange(handlers, context, startIndex) {
+				addRange: function Event_addRange(handlers, context, args, startIndex) {
 					var indexes = [];
-					handlers.forEach(this._addFromIndex.bind(this, context, startIndex, indexes));
+					handlers.forEach(this._addFromIndex.bind(this, context, args, startIndex, indexes));
 					return indexes;
 				},
 
-				add: function Event_add(handler, context, index) {
-					if ("object" === typeof context) {
-						handler = handler.bind(context);
+				add: function Event_add(handler, context, args, index) {
+					if (context && "object" === typeof context) {
+						args = args && args.slice() || [];
+						args.unshift(context);
+						handler = handler.bind.apply(handler, args);
 					}
 
 					if ("number" === typeof index) {

@@ -3,9 +3,10 @@
 	name: "components.movie.collection",
 	base: "components._base.collection",
 	deps: [
-		"components.movie.model"
+		"components.movie.model",
+		"core.dataStructures.event"
 	],
-	getter: function (MovieModel) {
+	getter: function (MovieModel, $Event) {
 		"use strict";
 
 		return {
@@ -13,6 +14,7 @@
 
 			ctor: function MovieCollection() {
 				this._selectedModelId = null;
+				this.movieSelected = new $Event();
 			},
 
 			proto: {
@@ -33,7 +35,7 @@
 				select: function MovieCollection_select(id) {
 					if (id !== this._selectedModelId) {
 						this._selectedModelId = id;
-						this.onSelectMovie({ movieId: id });
+						this.movieSelected.trigger({ movieId: id });
 					}
 				},
 
@@ -41,14 +43,8 @@
 					this.base.dispose.apply(this, arguments);
 
 					this._selectedMovieId = null;
-				},
-
-				// +++ events +++
-				onSelectMovie: function MovieCollection_onSelectMovie(event) {
-					event = event || { movieId: this._selectedModelId };
-					this.publish("onSelectMovie", event);
+					this.movieSelected = new $Event();
 				}
-				// --- events ---
 			}
 		};
 	}

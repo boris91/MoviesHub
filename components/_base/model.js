@@ -1,8 +1,10 @@
 ﻿({
 	type: "class",
 	name: "components._base.model",
-	base: "core.mediator",
-	getter: function () {
+	deps: [
+		"core.dataStructures.event"
+	],
+	getter: function ($Event) {
 		"use strict";
 
 		var $Object = window.Object,
@@ -13,6 +15,8 @@
 
 			ctor: function BaseModel(props) {
 				this.id = props && props.id || $idsGenerator.getId();
+				this.propChanged = new $Event();
+				this.propsChanged = new $Event();
 			},
 
 			proto: {
@@ -28,7 +32,7 @@
 						if (!silentMode) {
 							propChangedEventArgs = {};
 							propChangedEventArgs[propName] = newValue;
-							this.onPropChanged(propChangedEventArgs);
+							this.propChanged.trigger(propChangedEventArgs);
 						}
 
 						return true;
@@ -49,21 +53,11 @@
 					}
 
 					if (!silentMode && 0 !== $Object.keys(changedProps).length) {
-						this.onPropsChanged(changedProps);
+						this.propsChanged.trigger(changedProps);
 					}
 
 					return changedProps;
-				},
-
-				// +++ events +++
-				onPropChanged: function BaseModel_onPropChanged(args) {
-					this.publish("onPropChanged", args);
-				},
-
-				onPropsChanged: function BaseModel_onPropsChanged(args) {
-					this.publish("onPropsChanged", args);
 				}
-				// --- events ---
 			}
 		};
 	}

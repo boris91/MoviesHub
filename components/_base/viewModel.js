@@ -1,7 +1,6 @@
 ﻿({
 	type: "class",
 	name: "components._base.viewModel",
-	base: "core.mediator",
 	getter: function () {
 		"use strict";
 
@@ -17,10 +16,9 @@
 				_CollectionClass: null,// virtual, gotta be overridden after inheritance from this class
 				_ViewClass: null,// virtual, gotta be overridden after inheritance from this class
 
-				_getHandlerToBind: function BaseViewModel__getHandlerToBind(context, handler, sender) {
-					var method = handler.bind(context);
+				_getHandlerToBind: function BaseViewModel__getHandlerToBind(handler, sender) {
 					return function (event) {
-						method(event, sender);
+						handler.call(this, event, sender);
 					};
 				},
 
@@ -33,8 +31,8 @@
 						partialView = view.getPartialView(partialViewName);
 						handlers = bindingInfos[partialViewName];
 						for (eventName in handlers) {
-							handler = this._getHandlerToBind(partialView, handlers[eventName], collection);
-							collection.subscribe(eventName, handler);
+							handler = this._getHandlerToBind(handlers[eventName], collection);
+							collection[eventName].add(handler, partialView);
 						}
 					}
 				},
@@ -47,17 +45,17 @@
 						partialView = view.getPartialView(partialViewName);
 						handlers = bindingInfos[partialViewName];
 						for (eventName in handlers) {
-							handler = this._getHandlerToBind(collection, handlers[eventName], partialView);
-							partialView.subscribe(eventName, handler);
+							handler = this._getHandlerToBind(handlers[eventName], partialView);
+							partialView[eventName].add(handler, collection);
 						}
 					}
 				},
 				_unbind: function BaseViewModel__unbind() {
-					this._collection.unsubscribeAll();
+					/*this._collection.unsubscribeAll();
 					this._view.forEach(function (partialView) {
 						partialView.unsubscribeAll();
 					});
-					this._view.unsubscribeAll();
+					this._view.unsubscribeAll();*/
 				},
 
 				/*
@@ -94,11 +92,7 @@
 					this._collection = new this._CollectionClass();
 					this._view = new this._ViewClass();
 
-					this._view.subscribe("onInitComplete", function () {
-						this._bindViewToCollection(params.collection.handlers);
-						this._bindCollectionToView(params.view.handlers);
-						this._collection.init(params.collection.params);
-					}.bind(this));
+					this._view.initCompleted.add(this.onViewInitCompleted, this, [params]);
 					this._view.init(params.view.params);
 				},
 
@@ -110,8 +104,12 @@
 
 					this._collection = null;
 					this._view = null;
+				},
 
-					this.unsubscribeAll();
+				onViewInitCompleted: function(params) {
+					this._bindViewToCollection(params.collection.handlers);
+					this._bindCollectionToView(params.view.handlers);
+					this._collection.init(params.collection.params);
 				}
 			}
 		};
