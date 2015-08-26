@@ -43,7 +43,6 @@
 					this.base.dispose.apply(this, arguments);
 
 					this._selectedMovieId = null;
-					this.movieSelected = new $Event();
 				}
 			}
 		};

@@ -11,6 +11,21 @@
 				this._handlers = [];
 			},
 
+			stat: {
+				clearEventsFor: function Event_clearEventsFor(object) {
+					console.info("clearing " + object);
+					var propName, prop;
+					for (propName in object) {
+						if (object.hasOwnProperty(propName)) {
+							prop = object[propName];
+							if (prop instanceof this) {
+								prop.removeAll();
+							}
+						}
+					}
+				}
+			},
+
 			proto: {
 				_count: 0,
 

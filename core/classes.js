@@ -20,6 +20,7 @@
 				name: "myClass",
 				base: function () {} / class,
 				ctor: function () {},
+				stat: { ... },
 				proto: {}
 			}
 		*/
@@ -52,6 +53,9 @@
 
 			if (params.proto) {
 				this.extend(ClassProto, params.proto);
+			}
+			if (params.stat) {
+				this.extend(Class, params.stat);
 			}
 
 			ClassProto.__bases__ = ClassBases;

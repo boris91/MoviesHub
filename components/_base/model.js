@@ -57,6 +57,10 @@
 					}
 
 					return changedProps;
+				},
+
+				dispose: function BaseModel_dispose() {
+					$Event.clearEventsFor(this);
 				}
 			}
 		};

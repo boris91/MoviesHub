@@ -80,7 +80,8 @@
 					}
 
 					this._partialViews = null;
-					this.initCompleted = new $Event();
+
+					$Event.clearEventsFor(this);
 				},
 
 				getPartialView: function BaseView_getPartialView(name) {

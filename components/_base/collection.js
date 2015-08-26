@@ -92,11 +92,9 @@
 				},
 
 				dispose: function BaseCollection_dispose() {
-					this.initCompleted = new $Event();
-					this.modelAdded = new $Event();
-					this.modelRemoved = new $Event();
-					this.modelsUpdated = new $Event();
 					this._models = null;
+
+					$Event.clearEventsFor(this);
 				}
 			}
 		};

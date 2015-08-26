@@ -64,6 +64,8 @@
 					$stylesManager.exclude(this._styles);
 					this._domNodes = null;
 					this._domContainer = null;
+
+					$Event.clearEventsFor(this);
 				}
 			}
 		};

@@ -1,7 +1,10 @@
 ﻿({
 	type: "class",
 	name: "components._base.viewModel",
-	getter: function () {
+	deps: [
+		"core.dataStructures.event"
+	],
+	getter: function ($Event) {
 		"use strict";
 
 		return {
@@ -36,6 +39,7 @@
 						}
 					}
 				},
+
 				_bindCollectionToView: function BaseViewModel__bindCollectionToView(bindingInfos) {
 					var collection = this._collection,
 						view = this._view,
@@ -50,12 +54,13 @@
 						}
 					}
 				},
+
 				_unbind: function BaseViewModel__unbind() {
-					/*this._collection.unsubscribeAll();
+					$Event.clearEventsFor(this._collection);
 					this._view.forEach(function (partialView) {
-						partialView.unsubscribeAll();
+						$Event.clearEventsFor(partialView);
 					});
-					this._view.unsubscribeAll();*/
+					$Event.clearEventsFor(this._view);
 				},
 
 				/*
@@ -104,6 +109,7 @@
 
 					this._collection = null;
 					this._view = null;
+					$Event.clearEventsFor(this);
 				},
 
 				onViewInitCompleted: function(params) {

@@ -53,6 +53,8 @@
 					$stylesManager.exclude(this._styles);
 					this._domNode = null;
 					this._domContainer = null;
+
+					$Event.clearEventsFor(this);
 				}
 			}
 		};

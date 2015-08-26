@@ -9,8 +9,8 @@
 		_getControllerFullName = function layouts__getControllerFullName(layoutName) {
 			return ($layoutsPath + layoutName + "/controller").replace(/\//g, ".");
 		},
-		_onControllerLoaded = function layouts__onControllerLoaded(layoutName, controller) {
-			_controllers[layoutName] = controller;
+		_onControllerClassLoaded = function layouts__onControllerLoaded(layoutName, ControllerClass) {
+			var controller = _controllers[layoutName] = new ControllerClass();
 			controller.init();
 		};
 
@@ -23,7 +23,7 @@
 				controller.init();
 			} else {
 				controllerFullName = _getControllerFullName(layoutName);
-				$modules.require(controllerFullName, _onControllerLoaded.bind(null, layoutName));
+				$modules.require(controllerFullName, _onControllerClassLoaded.bind(null, layoutName));
 			}
 		},
 

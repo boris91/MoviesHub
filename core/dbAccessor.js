@@ -8,11 +8,12 @@
 		/*
 			params: {
 				table: "movie",
-				callback: function (res) { ... }
+				callback: function (res) { ... },
+				context: { ... }
 			}
 		*/
 		get: function dbAccessor_get(params) {
-			var reqCallback = params.callback,
+			var reqCallback = params.callback && params.callback.bind(params.context),
 				reqUrl = $dbPath + params.table + ".json",
 				reqParams = {
 					method: "GET",

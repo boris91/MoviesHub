@@ -287,6 +287,7 @@
 				/*
 					params: {
 						name: "myClass",
+						stat: { ... },
 						base: function () {} / class,
 						ctor: function () {},
 						proto: {}
@@ -321,6 +322,9 @@
 
 					if (params.proto) {
 						this.extend(ClassProto, params.proto);
+					}
+					if (params.stat) {
+						this.extend(Class, params.stat);
 					}
 
 					ClassProto.__bases__ = ClassBases;
@@ -810,8 +814,8 @@
 				_getControllerFullName = function layouts__getControllerFullName(layoutName) {
 					return ($layoutsPath + layoutName + "/controller").replace(/\//g, ".");
 				},
-				_onControllerLoaded = function layouts__onControllerLoaded(layoutName, controller) {
-					_controllers[layoutName] = controller;
+				_onControllerClassLoaded = function layouts__onControllerLoaded(layoutName, ControllerClass) {
+					var controller = _controllers[layoutName] = new ControllerClass();
 					controller.init();
 				};
 
@@ -824,7 +828,7 @@
 						controller.init();
 					} else {
 						controllerFullName = _getControllerFullName(layoutName);
-						$modules.require(controllerFullName, _onControllerLoaded.bind(null, layoutName));
+						$modules.require(controllerFullName, _onControllerClassLoaded.bind(null, layoutName));
 					}
 				},
 
@@ -916,11 +920,12 @@
 				/*
 					params: {
 						table: "movie",
-						callback: function (res) { ... }
+						callback: function (res) { ... },
+						context: { ... }
 					}
 				*/
 				get: function dbAccessor_get(params) {
-					var reqCallback = params.callback,
+					var reqCallback = params.callback && params.callback.bind(params.context),
 						reqUrl = $dbPath + params.table + ".json",
 						reqParams = {
 							method: "GET",
