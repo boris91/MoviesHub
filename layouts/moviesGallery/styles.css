@@ -2,7 +2,7 @@
 	background-color: rgba(29, 29, 29, 0.84);
 }
 
-#components_movie_common_container {
+.components_movie_common_container {
 	width: 70%;
 	margin: 0 15% 0 15%;
 	padding: 40px;

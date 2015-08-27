@@ -25,7 +25,7 @@
 			view: {
 				params: {
 					"tiles": {
-						domContainer: $dom.getFirst("#components_movie_tiles_container"),
+						domContainer: $dom.getFirst(".components_movie_tiles_container"),
 						listeners: {
 							"click": function (event) {
 								var selectedMovieId = event.target.getAttribute("tiles-item-id");
@@ -37,7 +37,7 @@
 						}
 					},
 					"details": {
-						domContainer: $dom.getFirst("#components_movie_details_container")
+						domContainer: $dom.getFirst(".components_movie_details_container")
 					}
 				},
 				handlers: {
