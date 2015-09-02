@@ -4,7 +4,7 @@
 	deps: [
 		"core.dataStructures.event"
 	],
-	getter: function ($Event) {
+	getter: function getterOf_BaseModel($Event) {
 		"use strict";
 
 		var $Object = window.Object,

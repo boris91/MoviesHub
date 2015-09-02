@@ -7,7 +7,7 @@
 		"CSS:layouts.moviesGallery.styles",
 		"components.movie.viewModel"
 	],
-	getter: function (moviesGalleryTemplate, moviesGalleryStyles, MovieViewModel) {
+	getter: function getterOf_MoviesGalleryLayoutController(moviesGalleryTemplate, moviesGalleryStyles, MovieViewModel) {
 		"use strict";
 
 		return {
@@ -17,8 +17,7 @@
 				_ViewModelClass: MovieViewModel,
 				_layoutTemplate: moviesGalleryTemplate,
 				_layoutStyles: moviesGalleryStyles,
-				_dbTableName: "movie",
-				_vmParamsModuleName: "layouts.moviesGallery.viewModelParams.movie"
+				_dbTableName: "movie"
 			}
 		};
 	}

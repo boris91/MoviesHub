@@ -13,7 +13,6 @@
 
 			stat: {
 				clearEventsFor: function Event_clearEventsFor(object) {
-					console.info("clearing " + object);
 					var propName, prop;
 					for (propName in object) {
 						if (object.hasOwnProperty(propName)) {
@@ -58,7 +57,9 @@
 				},
 
 				remove: function Event_remove(index) {
-					this._handlers.splice(index, 1);
+					if (index > -1) {
+						this._handlers.splice(index, 1);
+					}
 				},
 
 				removeAll: function Event_removeAll() {

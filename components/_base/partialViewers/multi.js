@@ -1,7 +1,7 @@
 ﻿({
 	type: "class",
 	name: "components._base.partialViewers.multi",
-	getter: function () {
+	getter: function getterOf_BaseMultiViewer() {
 		"use strict";
 
 		var $dom = app.core.dom,
@@ -28,12 +28,9 @@
 					}
 				},
 
-				init: function BaseMultiViewer_init(params) {
+				init: function BaseMultiViewer_init() {
 					this._domNodes = [];
-					this._domContainer = params.domContainer;
-					if (params.listeners) {
-						this._addEventListeners(params.listeners);
-					}
+					this._domContainer = null;
 					$stylesManager.include(this._styles);
 				},
 

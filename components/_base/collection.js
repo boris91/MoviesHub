@@ -4,7 +4,7 @@
 	deps: [
 		"core.dataStructures.event"
 	],
-	getter: function ($Event) {
+	getter: function getterOf_BaseCollection($Event) {
 		"use strict";
 
 		return {
@@ -25,14 +25,17 @@
 			proto: {
 				_ModelClass: null,
 
+				_getModelEvent: function BaseCollection__getModelEvent(id, eventName) {
+					var model = this._models[id];
+					return model && model[eventName] || null;
+				},
+
 				init: function BaseCollection_init(dataArray) {
 					this._models = {};
 
-					dataArray.forEach(function (data) {
-						this.add(data);
-					}, this);
+					dataArray.forEach(this.add, this);
 
-					this.initCompleted.trigger({ models: this._models });
+					this.initCompleted.trigger(this);
 				},
 
 				add: function BaseCollection_add(data) {
@@ -51,6 +54,24 @@
 
 				set: function BaseCollection_set(id, propName, value, silentMode) {
 					return this._models[id].set(propName, value, silentMode);
+				},
+
+				addEventHandler: function BaseCollection_addEventListener(id, eventName, handler, context, args, index) {
+					var event = this._getModelEvent(id, eventName);
+
+					if (event) {
+						return event.add(han, context, args, index);
+					}
+
+					return -1;
+				},
+
+				removeEventHandler: function BaseCollection_removeEventHandler(id, eventName, handlerIndex) {
+					var event = this._getModelEvent(id, eventName);
+
+					if (event) {
+						event.remove(handlerIndex);
+					}
 				},
 
 				forEach: function BaseCollection_forEach(action, context) {

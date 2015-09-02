@@ -6,7 +6,7 @@
 		"components.movie.model",
 		"core.dataStructures.event"
 	],
-	getter: function (MovieModel, $Event) {
+	getter: function getterOf_MovieCollection(MovieModel, $Event) {
 		"use strict";
 
 		return {
@@ -35,7 +35,7 @@
 				select: function MovieCollection_select(id) {
 					if (id !== this._selectedModelId) {
 						this._selectedModelId = id;
-						this.movieSelected.trigger({ movieId: id });
+						this.movieSelected.trigger(id);
 					}
 				},
 

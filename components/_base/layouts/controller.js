@@ -4,7 +4,7 @@
 	deps: [
 		"core.dataStructures.event"
 	],
-	getter: function ($Event) {
+	getter: function getterOf_BaseLayoutController($Event) {
 		"use strict";
 
 		var $core = app.core,
@@ -12,28 +12,24 @@
 			$domBody = $dom.body,
 			$modules = $core.modules,
 			$dbAccessor = $core.dbAccessor,
-			$stylesManager = $core.stylesManager,
-
-			_vmParams = null,
-			_vm = null;
+			$stylesManager = $core.stylesManager;
 
 		return {
 			name: "BaseLayoutController",
+
+			ctor: function BaseLayoutController() {
+				this._vm = null;
+			},
 
 			proto: {
 				_ViewModelClass: null,// virtual, gotta be overridden after inheritance from this class
 				_layoutTemplate: null,// virtual, gotta be overridden after inheritance from this class
 				_layoutStyles: null,// virtual, gotta be overridden after inheritance from this class
 				_dbTableName: null,// virtual, gotta be overridden after inheritance from this class
-				_vmParamsModuleName: null,// virtual, gotta be overridden after inheritance from this class
 
 				_onGetDataFromDb: function BaseLayoutController__onGetDataFromDb(dbData) {
 					if (dbData) {
-						$modules.require(this._vmParamsModuleName, function (vmParams) {
-							_vmParams = vmParams;
-							_vmParams.collection.params = dbData;
-							_vm.init(_vmParams);
-						});
+						this._vm.init(dbData);
 					} else {
 						throw "No data provided by DB table \"" + this._dbTableName + "\"!";
 					}
@@ -42,7 +38,7 @@
 				init: function BaseLayoutController_init() {
 					$stylesManager.include(this._layoutStyles);
 					this._layoutTemplate(null, $domBody);
-					_vm = new this._ViewModelClass();
+					this._vm = new this._ViewModelClass();
 				
 					$dbAccessor.get({
 						table: this._dbTableName,
@@ -57,16 +53,7 @@
 				},
 
 				dispose: function BaseLayoutController_dispose() {
-					var activeViews = _vmParams.view.views,
-						viewName, viewDomContainer;
-
-					_vm.dispose();
-					_vmParams.collection.data = null;
-
-					for (viewName in activeViews) {
-						viewDomContainer = activeViews[viewName].domContainer;
-						$dom.remove(viewDomContainer);
-					}
+					this._vm.dispose();
 
 					$stylesManager.exclude(this._layoutStyles);
 					$Event.clearEventsFor(this);

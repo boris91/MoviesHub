@@ -4,7 +4,7 @@
 	deps: [
 		"core.dataStructures.event"
 	],
-	getter: function ($Event) {
+	getter: function getterOf_BaseView($Event) {
 		"use strict";
 
 		var $Array_forEach = window.Array.prototype.forEach,
@@ -20,30 +20,31 @@
 
 			proto: {
 				_componentName: null,//virtual property, override after inheritance from this class
+				_partialViewsNames: null,//virtual property, override after inheritance from this class
 
-				_addAndInit: function BaseView__addAndInit(viewName, viewParams, Viewer) {
-					var viewer = new Viewer();
-					this._partialViews[viewName] = viewer;
-					viewer.init(viewParams);
-					return viewer;
+				_addAndInit: function BaseView__addAndInit(partialViewName, PartialViewClass) {
+					var partialView = new PartialViewClass();
+					this._partialViews[partialViewName] = partialView;
+					partialView.init();
+					return partialView;
 				},
 
-				init: function BaseView_init(viewsParams) {
-					var viewsNames = [],
+				init: function BaseView_init() {
+					var partialViewNames = [],
 						viewersModulesNames = [],
-						viewersRequireCallback = function (/* arguments - Array of partialViews */) {
-							$Array_forEach.call(arguments, function (viewer, i) {
-								var name = viewsNames[i],
-									params = viewsParams[name];
-								this._addAndInit(name, params, viewer);
+						viewersRequireCallback = function viewerRequireCallback(/* arguments - Array of PartialViewsClasses */) {
+							$Array_forEach.call(arguments, function (PartialViewClass, i) {
+								this._addAndInit(partialViewNames[i], PartialViewClass);
 							}, this);
 							this.initCompleted.trigger();
 						}.bind(this),
-						viewName;
+						partialViewName;
 
-					for (viewName in viewsParams) {
-						viewsNames.push(viewName);
-						viewersModulesNames.push("components." + this._componentName + ".partialViews." + viewName + ".viewer");
+					if (this._partialViewsNames) {
+						this._partialViewsNames.forEach(function (partialViewName) {
+							partialViewNames.push(partialViewName);
+							viewersModulesNames.push("components." + this._componentName + ".partialViews." + partialViewName + ".viewer");
+						}, this);
 					}
 
 					this._partialViews = {};

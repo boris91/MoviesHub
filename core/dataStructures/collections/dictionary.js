@@ -1,7 +1,7 @@
 ({
 	type: "class",
 	name: "core.dataStructures.collections.dictionary",
-	getter: function () {
+	getter: function getterOf_Dictionary() {
 		"use strict";
 
 		return {

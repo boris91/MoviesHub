@@ -2,7 +2,7 @@
 	type: "class",
 	name: "components.movie.model",
 	base: "components._base.model",
-	getter: function () {
+	getter: function getterOf_MovieModel() {
 		"use strict";
 
 		var $idsGenerator = app.core.idsGenerator,

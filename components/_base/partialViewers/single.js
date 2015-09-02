@@ -1,7 +1,7 @@
 ﻿({
 	type: "class",
 	name: "components._base.partialViewers.single",
-	getter: function () {
+	getter: function getterOf_BaseSingleViewer() {
 		"use strict";
 
 		var $dom = app.core.dom,
@@ -28,11 +28,8 @@
 					}
 				},
 
-				init: function BaseSingleViewer_init(params) {
-					this._domContainer = params.domContainer;
-					if (params.listeners) {
-						this._addEventListeners(params.listeners);
-					}
+				init: function BaseSingleViewer_init() {
+					this._domContainer = null;
 					$stylesManager.include(this._styles);
 				},
 

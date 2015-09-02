@@ -5,7 +5,7 @@
 	deps: [
 		"core.dataStructures.event"
 	],
-	getter: function ($Event) {
+	getter: function getterOf_MovieView($Event) {
 		"use strict";
 
 		return {
@@ -13,24 +13,22 @@
 
 			ctor: function MovieView() {
 				this.movieSelected = new $Event();
+				this.initCompleted.add(this.onViewInitCompleted, this);
 			},
 
 			proto: {
 				_componentName: "movie",
+				_partialViewsNames: [
+					"tiles",
+					"details"
+				],
 
-				_addAndInit: function MovieView__addAndInit(viewName, viewParams, Viewer) {
-					var viewer = this.base._addAndInit.apply(this, arguments);
-					if (viewer.movieSelected instanceof $Event) {
-						viewer.movieSelected.add(this.onMovieSelected, this);
-					}
+				onViewInitCompleted: function MovieView_onInitCompleted() {
+					this._partialViews["tiles"].movieSelected.add(this.onTilesMovieSelected, this);
 				},
 
-				init: function MovieView_init(viewsParams) {
-					this.base.init.apply(this, arguments);
-				},
-
-				onMovieSelected: function MovieView_onMovieSelected(arg) {
-					this.movieSelected.trigger(arg);
+				onTilesMovieSelected: function MovieView_onTilesMovieSelected(movieId) {
+					this.movieSelected.trigger(movieId);
 				}
 			}
 		};
